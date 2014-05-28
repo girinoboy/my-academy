@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="_template.xhtml">
+	<ui:define name="corpo">
+		<h:form id="formModalidade">
+			<h:inputHidden id="idModalidade"
+				value="#{modalidadeBean.modalidade.id}" />
+			<fieldset>
+				<legend>Modalidade</legend>
+				<h:panelGrid id="grid" columns="2">
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{modalidadeBean.modalidade.nome}">
+						<f:ajax event="change" />
+					</p:inputText>
+
+					<p:outputLabel value="Descrição:" for="descricao" />
+					<p:inputTextarea id="descricao"
+						value="#{modalidadeBean.modalidade.descricao}">
+						<f:ajax event="change" />
+					</p:inputTextarea>
+
+					<p:outputLabel value="Preço:" for="preco" />
+					<p:inputText id="preco" value="#{modalidadeBean.modalidade.preco}">
+
+						<f:ajax event="change" />
+					</p:inputText>
+
+				</h:panelGrid>
+			</fieldset>
+
+			<div align="right">
+				<p:commandButton value="Voltar"
+					action="/menu.xhtml?faces-redirect=true" immediate="true" />
+				<p:commandButton action="#{modalidadeBean.grava}" value="Gravar"
+					update="result,grid" />
+
+			</div>
+
+			<br></br>
+			<p:dataTable id="result" value="#{modalidadeBean.modalidades}"
+				var="modalidade">
+
+				<p:column>
+					<f:facet name="header">Modalidades</f:facet>
+						#{modalidade.nome}						
+					</p:column>
+				<p:column>
+					<f:facet name="header">Descrição</f:facet>
+						#{modalidade.descricao}						
+					</p:column>
+				<p:column>
+					<f:facet name="header">Valor</f:facet>
+					<h:outputText value="#{modalidade.preco}">
+						<f:convertNumber type="currency" currencySymbol="R$ "
+							locale="pt_BR" />
+					</h:outputText>
+				</p:column>
+				<p:column>
+					<f:facet name="header">Ações</f:facet>
+
+					<p:commandLink action="#{modalidadeBean.remove}"
+						update="result,:messages" value="Remover">
+						<f:setPropertyActionListener value="#{modalidade}"
+							target="#{modalidadeBean.modalidade}" />
+					</p:commandLink>
+					<br />
+					<p:commandLink value="Alterar" update=":formModalidade">
+						<f:setPropertyActionListener value="#{modalidade}"
+							target="#{modalidadeBean.modalidade}" />
+					</p:commandLink>
+
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+</html>
